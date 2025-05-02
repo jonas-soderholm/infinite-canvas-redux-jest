@@ -77,7 +77,7 @@ const InfiniteCanvas = () => {
     }
     setDrawing(false);
     setPanning(false);
-    setCursor("pointer");
+    setCursor("crosshair");
     setCurrentStroke([]);
   };
 
@@ -129,35 +129,33 @@ const InfiniteCanvas = () => {
   return (
     <div
       onWheel={handleWheel}
-      className="fixed inset-0 overflow-hidden bg-black z-0"
+      className="fixed inset-0 bg-black overflow-hidden z-0"
     >
-      <canvas
-        ref={canvasRef}
-        width={typeof window !== "undefined" ? window.innerWidth : 800}
-        height={typeof window !== "undefined" ? window.innerHeight : 600}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onContextMenu={(e) => e.preventDefault()}
-        style={{
-          display: "block",
-          cursor: cursor,
-        }}
-      />
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-4 z-10">
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex">
         <button
           onClick={() => dispatch(undo())}
-          className="bg-white text-black px-4 py-2 rounded"
+          className="bg-white text-black rounded"
         >
           Undo
         </button>
         <button
           onClick={() => dispatch(redo())}
-          className="bg-white text-black px-4 py-2 rounded"
+          className="bg-white text-black rounded"
         >
           Redo
         </button>
       </div>
+      <canvas
+        ref={canvasRef}
+        width={window.innerWidth}
+        height={window.innerHeight - 60}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onContextMenu={(e) => e.preventDefault()}
+        className="absolute top-0 left-0 w-full h-full"
+        style={{ cursor }}
+      />
     </div>
   );
 };
